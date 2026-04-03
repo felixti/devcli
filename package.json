@@ -32,7 +32,7 @@
   },
   "scripts": {
     "prepare": "husky",
-    "lint": "biome check src/",
+    "lint": "biome check --diagnostic-level=error src/",
     "lint:fix": "biome check --fix src/",
     "format": "biome format src/",
     "format:fix": "biome format --fix src/",
@@ -41,6 +41,8 @@
     "check": "bun run typecheck && bun run lint && bun test"
   },
   "lint-staged": {
-    "*.ts": ["biome check --fix --no-errors-on-unmatched"]
+    "*.ts": [
+      "biome check --fix --no-errors-on-unmatched"
+    ]
   }
 }
