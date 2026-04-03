@@ -1,9 +1,9 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S bun run
 
-import { runCLI } from "../src/cli";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { runCLI } from "../src/cli";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
