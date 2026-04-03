@@ -1,4 +1,5 @@
 import type { Command } from "@commander-js/extra-typings";
+import type { WslConfigService } from "../wsl/wslconfig.types";
 
 export interface DevcliModule {
 	name: string;
@@ -13,6 +14,7 @@ export interface ServiceContainer {
 	getFileSystem(): FileSystem;
 	getPlatformDetector(): PlatformDetector;
 	getFormatter(): Formatter;
+	getWslConfigService(): WslConfigService;
 }
 
 export type Platform = "windows" | "wsl1" | "wsl2" | "macos" | "linux";
