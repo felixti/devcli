@@ -29,5 +29,18 @@
     "@commander-js/extra-typings": "^12",
     "commander": "^12",
     "zod": "^3"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "lint": "biome check src/",
+    "lint:fix": "biome check --fix src/",
+    "format": "biome format src/",
+    "format:fix": "biome format --fix src/",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "check": "bun run typecheck && bun run lint && bun test"
+  },
+  "lint-staged": {
+    "*.ts": ["biome check --fix --no-errors-on-unmatched"]
   }
 }
