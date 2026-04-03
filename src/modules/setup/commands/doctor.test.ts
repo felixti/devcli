@@ -90,6 +90,13 @@ describe("DoctorCommand", () => {
 			getFileSystem: () => fileSystem,
 			getPlatformDetector: () => platformDetector,
 			getFormatter: () => formatter,
+			getWslConfigService: () => ({
+				getHostResources: async () => null,
+				calculateRecommendation: () => ({ processors: 2, memoryGB: 2 }),
+				check: async () => null,
+				getWindowsHomePath: async () => "/mnt/c/Users/test",
+				createConfig: async () => {},
+			}),
 		};
 
 		command = new DoctorCommand(registry, services);
@@ -297,6 +304,13 @@ describe("DoctorCommand", () => {
 			getFileSystem: () => fileSystem,
 			getPlatformDetector: () => platformDetector,
 			getFormatter: () => formatter,
+			getWslConfigService: () => ({
+				getHostResources: async () => null,
+				calculateRecommendation: () => ({ processors: 2, memoryGB: 2 }),
+				check: async () => null,
+				getWindowsHomePath: async () => "/mnt/c/Users/test",
+				createConfig: async () => {},
+			}),
 		};
 
 		const cmd = new DoctorCommand(registry, services);

@@ -61,6 +61,8 @@ describe("ServiceContainer interface", () => {
 		const mockFileSystem = {} as FileSystem;
 		const mockPlatformDetector = {} as PlatformDetector;
 		const mockFormatter = {} as Formatter;
+		const mockWslConfigService =
+			{} as import("../wsl/wslconfig.types").WslConfigService;
 
 		const services: ServiceContainer = {
 			getProcessRunner: () => mockProcessRunner,
@@ -69,6 +71,7 @@ describe("ServiceContainer interface", () => {
 			getFileSystem: () => mockFileSystem,
 			getPlatformDetector: () => mockPlatformDetector,
 			getFormatter: () => mockFormatter,
+			getWslConfigService: () => mockWslConfigService,
 		};
 
 		expect(services.getProcessRunner()).toBe(mockProcessRunner);
@@ -77,6 +80,7 @@ describe("ServiceContainer interface", () => {
 		expect(services.getFileSystem()).toBe(mockFileSystem);
 		expect(services.getPlatformDetector()).toBe(mockPlatformDetector);
 		expect(services.getFormatter()).toBe(mockFormatter);
+		expect(services.getWslConfigService()).toBe(mockWslConfigService);
 	});
 });
 

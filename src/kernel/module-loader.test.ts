@@ -68,6 +68,13 @@ describe("ModuleLoader", () => {
 				json: () => {},
 				section: () => {},
 			}),
+			getWslConfigService: () => ({
+				getHostResources: async () => null,
+				calculateRecommendation: () => ({ processors: 2, memoryGB: 2 }),
+				check: async () => null,
+				getWindowsHomePath: async () => "/mnt/c/Users/test",
+				createConfig: async () => {},
+			}),
 		};
 	});
 

@@ -11,6 +11,7 @@ import { RealFileSystem } from "@/services/file-system.impl";
 import { RealPlatformDetector } from "@/services/platform-detector";
 import { RealProcessRunner } from "@/services/process-runner.impl";
 import { RealPrompter } from "@/services/prompter.impl";
+import { WslConfigServiceImpl } from "@/wsl/wslconfig.service";
 
 export interface CLIDeps {
 	version: string;
@@ -39,6 +40,12 @@ function createServiceContainer(): ServiceContainer {
 		getFileSystem: () => new RealFileSystem(),
 		getPlatformDetector: () => new RealPlatformDetector(),
 		getFormatter: () => new Formatter(),
+		getWslConfigService: () =>
+			new WslConfigServiceImpl(
+				new RealProcessRunner(),
+				new RealFileSystem(),
+				new RealPrompter(),
+			),
 	});
 }
 

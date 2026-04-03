@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, test } from "bun:test";
+import type { WslConfigService } from "../wsl/wslconfig.types";
 // We need to import the class we're testing, but it doesn't exist yet
 // Using type-only import for now since we'll create it
 import type { ServiceContainerImpl } from "./service-container";
@@ -20,6 +21,7 @@ describe("ServiceContainerImpl", () => {
 	let fileSystemFactoryCalls: number;
 	let platformDetectorFactoryCalls: number;
 	let formatterFactoryCalls: number;
+	let wslConfigServiceFactoryCalls: number;
 
 	// Mock instances
 	let mockProcessRunner: ProcessRunner;
@@ -28,6 +30,7 @@ describe("ServiceContainerImpl", () => {
 	let mockFileSystem: FileSystem;
 	let mockPlatformDetector: PlatformDetector;
 	let mockFormatter: Formatter;
+	let mockWslConfigService: WslConfigService;
 
 	beforeEach(() => {
 		processRunnerFactoryCalls = 0;
@@ -36,6 +39,7 @@ describe("ServiceContainerImpl", () => {
 		fileSystemFactoryCalls = 0;
 		platformDetectorFactoryCalls = 0;
 		formatterFactoryCalls = 0;
+		wslConfigServiceFactoryCalls = 0;
 
 		mockProcessRunner = {
 			run: async () => ({
@@ -76,6 +80,14 @@ describe("ServiceContainerImpl", () => {
 			json: () => {},
 			section: () => {},
 		};
+
+		mockWslConfigService = {
+			getHostResources: async () => null,
+			calculateRecommendation: () => ({ processors: 2, memoryGB: 2 }),
+			check: async () => null,
+			getWindowsHomePath: async () => "/mnt/c/Users/test",
+			createConfig: async () => {},
+		};
 	});
 
 	test("accepts service factories via constructor", () => {
@@ -87,6 +99,7 @@ describe("ServiceContainerImpl", () => {
 			getFileSystem: () => mockFileSystem,
 			getPlatformDetector: () => mockPlatformDetector,
 			getFormatter: () => mockFormatter,
+			getWslConfigService: () => mockWslConfigService,
 		};
 
 		// We can't instantiate without the implementation, but we can test the shape
@@ -125,6 +138,10 @@ describe("ServiceContainerImpl", () => {
 				formatterFactoryCalls++;
 				return mockFormatter;
 			},
+			getWslConfigService: () => {
+				wslConfigServiceFactoryCalls++;
+				return mockWslConfigService;
+			},
 		};
 
 		// Dynamic import to get the implementation
@@ -155,6 +172,7 @@ describe("ServiceContainerImpl", () => {
 			getFileSystem: () => mockFileSystem,
 			getPlatformDetector: () => mockPlatformDetector,
 			getFormatter: () => mockFormatter,
+			getWslConfigService: () => mockWslConfigService,
 		};
 
 		const { ServiceContainerImpl } = await import("./service-container");
@@ -175,6 +193,7 @@ describe("ServiceContainerImpl", () => {
 			getFileSystem: () => mockFileSystem,
 			getPlatformDetector: () => mockPlatformDetector,
 			getFormatter: () => mockFormatter,
+			getWslConfigService: () => mockWslConfigService,
 		};
 
 		const { ServiceContainerImpl } = await import("./service-container");
@@ -192,6 +211,7 @@ describe("ServiceContainerImpl", () => {
 			getFileSystem: () => mockFileSystem,
 			getPlatformDetector: () => mockPlatformDetector,
 			getFormatter: () => mockFormatter,
+			getWslConfigService: () => mockWslConfigService,
 		};
 
 		const { ServiceContainerImpl } = await import("./service-container");
@@ -209,6 +229,7 @@ describe("ServiceContainerImpl", () => {
 			getFileSystem: () => mockFileSystem,
 			getPlatformDetector: () => mockPlatformDetector,
 			getFormatter: () => mockFormatter,
+			getWslConfigService: () => mockWslConfigService,
 		};
 
 		const { ServiceContainerImpl } = await import("./service-container");
@@ -226,6 +247,7 @@ describe("ServiceContainerImpl", () => {
 			getFileSystem: () => mockFileSystem,
 			getPlatformDetector: () => mockPlatformDetector,
 			getFormatter: () => mockFormatter,
+			getWslConfigService: () => mockWslConfigService,
 		};
 
 		const { ServiceContainerImpl } = await import("./service-container");
@@ -243,6 +265,7 @@ describe("ServiceContainerImpl", () => {
 			getFileSystem: () => mockFileSystem,
 			getPlatformDetector: () => mockPlatformDetector,
 			getFormatter: () => mockFormatter,
+			getWslConfigService: () => mockWslConfigService,
 		};
 
 		const { ServiceContainerImpl } = await import("./service-container");
@@ -260,12 +283,49 @@ describe("ServiceContainerImpl", () => {
 			getFileSystem: () => mockFileSystem,
 			getPlatformDetector: () => mockPlatformDetector,
 			getFormatter: () => mockFormatter,
+			getWslConfigService: () => mockWslConfigService,
 		};
 
 		const { ServiceContainerImpl } = await import("./service-container");
 		const container = new ServiceContainerImpl(factories);
 
-		const formatter = container.getFormatter();
-		expect(formatter).toBe(mockFormatter);
+		const prompter = container.getPrompter();
+		expect(prompter).toBe(mockPrompter);
+	});
+
+	test("getFileSystem returns FileSystem", async () => {
+		const factories = {
+			getProcessRunner: () => mockProcessRunner,
+			getConfigLoader: () => mockConfigLoader,
+			getPrompter: () => mockPrompter,
+			getFileSystem: () => mockFileSystem,
+			getPlatformDetector: () => mockPlatformDetector,
+			getFormatter: () => mockFormatter,
+			getWslConfigService: () => mockWslConfigService,
+		};
+
+		const { ServiceContainerImpl } = await import("./service-container");
+		const container = new ServiceContainerImpl(factories);
+
+		const fs = container.getFileSystem();
+		expect(fs).toBe(mockFileSystem);
+	});
+
+	test("getPlatformDetector returns PlatformDetector", async () => {
+		const factories = {
+			getProcessRunner: () => mockProcessRunner,
+			getConfigLoader: () => mockConfigLoader,
+			getPrompter: () => mockPrompter,
+			getFileSystem: () => mockFileSystem,
+			getPlatformDetector: () => mockPlatformDetector,
+			getFormatter: () => mockFormatter,
+			getWslConfigService: () => mockWslConfigService,
+		};
+
+		const { ServiceContainerImpl } = await import("./service-container");
+		const container = new ServiceContainerImpl(factories);
+
+		const detector = container.getPlatformDetector();
+		expect(detector).toBe(mockPlatformDetector);
 	});
 });

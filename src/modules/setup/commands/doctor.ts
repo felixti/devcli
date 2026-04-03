@@ -5,6 +5,10 @@ import type {
 	ServiceContainer,
 } from "@/kernel/types";
 import type { ToolModule, ToolRegistry } from "@/modules/setup/tools/registry";
+import type {
+	WslConfigRecommendation,
+	WslConfigService,
+} from "@/wsl/wslconfig.types";
 
 export interface DoctorOptions {
 	json?: boolean;
@@ -42,6 +46,21 @@ export class DoctorCommand {
 			_config = await configLoader.load();
 		} catch {
 			_config = { version: "1.0.0", tools: [] };
+		}
+
+		if (platformInfo.isWSL) {
+			const wslService = this.services.getWslConfigService();
+			const wslCheck = await wslService.check();
+
+			if (wslCheck) {
+				formatter.section("WSL Resource Configuration");
+				await this.displayWslConfigRecommendation(
+					wslCheck,
+					prompter,
+					wslService,
+					formatter,
+				);
+			}
 		}
 
 		const toolsToCheck = options.tool
@@ -127,5 +146,65 @@ export class DoctorCommand {
 		]);
 
 		formatter.table(headers, rows);
+	}
+
+	private async displayWslConfigRecommendation(
+		recommendation: WslConfigRecommendation,
+		prompter: ReturnType<ServiceContainer["getPrompter"]>,
+		wslService: WslConfigService,
+		formatter: ReturnType<ServiceContainer["getFormatter"]>,
+	): Promise<void> {
+		const { suggested, current, hostResources } = recommendation;
+
+		formatter.info(
+			`Host: ${hostResources.cpuCores} CPU cores, ${hostResources.memoryGB} GB RAM`,
+		);
+
+		if (current) {
+			formatter.warn(
+				`Current .wslconfig: ${current.processors} CPUs, ${current.memoryGB} GB RAM`,
+			);
+			formatter.warn(
+				`Suggested: ${suggested.processors} CPUs, ${suggested.memoryGB} GB RAM`,
+			);
+
+			if (
+				current.processors === suggested.processors &&
+				current.memoryGB === suggested.memoryGB
+			) {
+				formatter.success("WSL config matches recommendation");
+				return;
+			}
+
+			const apply = await prompter.confirm(
+				"Update .wslconfig to recommended values?",
+			);
+			if (!apply) {
+				formatter.info("WSL config update skipped");
+				return;
+			}
+		} else {
+			formatter.warn(".wslconfig not found");
+			formatter.info(
+				`Recommended: ${suggested.processors} CPUs, ${suggested.memoryGB} GB RAM`,
+			);
+
+			const create = await prompter.confirm(
+				"Create .wslconfig with recommended values?",
+			);
+			if (!create) {
+				formatter.info("WSL config creation skipped");
+				return;
+			}
+		}
+
+		try {
+			await wslService.createConfig(suggested);
+			formatter.success(
+				`.wslconfig created with ${suggested.processors} CPUs, ${suggested.memoryGB} GB RAM`,
+			);
+		} catch (error) {
+			formatter.error(`Failed to create .wslconfig: ${error}`);
+		}
 	}
 }
