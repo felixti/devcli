@@ -1,0 +1,28 @@
+{
+  "name": "devcli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "devcli": "bin/devcli.ts"
+  },
+  "files": [
+    "bin",
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^20",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@commander-js/extra-typings": "^12",
+    "commander": "^12",
+    "zod": "^3"
+  }
+}
