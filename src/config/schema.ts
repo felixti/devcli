@@ -5,15 +5,15 @@ import { z } from "zod";
  * Remote config format: { version: string, tools: Array<{ name, displayName, minVersion?, installMethod? }> }
  */
 export const ToolSchema = z.object({
-  name: z.string().min(1),
-  displayName: z.string().min(1),
-  minVersion: z.string().optional(),
-  installMethod: z.string().optional(),
+	name: z.string().min(1),
+	displayName: z.string().min(1),
+	minVersion: z.string().optional(),
+	installMethod: z.string().optional(),
 });
 
 export const RemoteConfigSchema = z.object({
-  version: z.string().min(1),
-  tools: z.array(ToolSchema).min(1),
+	version: z.string().min(1),
+	tools: z.array(ToolSchema).min(1),
 });
 
 /**

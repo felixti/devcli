@@ -7,10 +7,10 @@ import { detectPlatform } from "@/platform/detector";
  * Uses environment variables and filesystem checks to determine the current platform.
  */
 export class RealPlatformDetector implements PlatformDetector {
-  async detect(): Promise<PlatformInfo> {
-    return detectPlatform({
-      env: process.env as Record<string, string>,
-      readFile: async (path: string) => readFile(path, "utf-8"),
-    });
-  }
+	async detect(): Promise<PlatformInfo> {
+		return detectPlatform({
+			env: process.env as Record<string, string>,
+			readFile: async (path: string) => readFile(path, "utf-8"),
+		});
+	}
 }

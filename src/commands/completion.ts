@@ -3,15 +3,15 @@ export type ShellType = "bash" | "zsh" | "fish" | "powershell";
 const SUPPORTED_SHELLS: ShellType[] = ["bash", "zsh", "fish", "powershell"];
 
 function assertShell(shell: string): asserts shell is ShellType {
-  if (!SUPPORTED_SHELLS.includes(shell as ShellType)) {
-    throw new Error(
-      `Unsupported shell: ${shell}. Supported: ${SUPPORTED_SHELLS.join(", ")}`
-    );
-  }
+	if (!SUPPORTED_SHELLS.includes(shell as ShellType)) {
+		throw new Error(
+			`Unsupported shell: ${shell}. Supported: ${SUPPORTED_SHELLS.join(", ")}`,
+		);
+	}
 }
 
 function generateBashCompletion(): string {
-  return `#!/bin/bash
+	return `#!/bin/bash
 _devcli() {
     local cur prev words cword
     _init_completion || return
@@ -38,7 +38,7 @@ complete -F _devcli devcli
 }
 
 function generateZshCompletion(): string {
-  return `#!/bin/zsh
+	return `#!/bin/zsh
 #compdef devcli
 
 _devcli() {
@@ -77,7 +77,7 @@ _devcli "$@"
 }
 
 function generateFishCompletion(): string {
-  return `#!/usr/bin/env fish
+	return `#!/usr/bin/env fish
 complete -c devcli -f
 
 complete -c devcli -l version -d "Show version number"
@@ -100,7 +100,7 @@ complete -c devcli -n "test (count (commandline -opc)) -eq 2" -a "bash zsh fish 
 }
 
 function generatePowerShellCompletion(): string {
-  return `#!/usr/bin/env pwsh
+	return `#!/usr/bin/env pwsh
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
@@ -157,16 +157,16 @@ Register-ArgumentCompleter -CommandName 'devcli' -ScriptBlock $devcliCompleter
 }
 
 export function generateCompletion(shell: string): string {
-  assertShell(shell);
+	assertShell(shell);
 
-  switch (shell) {
-    case "bash":
-      return generateBashCompletion();
-    case "zsh":
-      return generateZshCompletion();
-    case "fish":
-      return generateFishCompletion();
-    case "powershell":
-      return generatePowerShellCompletion();
-  }
+	switch (shell) {
+		case "bash":
+			return generateBashCompletion();
+		case "zsh":
+			return generateZshCompletion();
+		case "fish":
+			return generateFishCompletion();
+		case "powershell":
+			return generatePowerShellCompletion();
+	}
 }

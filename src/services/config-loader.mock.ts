@@ -1,18 +1,18 @@
-import type { ConfigLoader } from "@/kernel/types";
 import type { RemoteConfig } from "@/config/schema";
+import type { ConfigLoader } from "@/kernel/types";
 
 export class MockConfigLoader implements ConfigLoader {
-  private config: RemoteConfig;
+	private config: RemoteConfig;
 
-  constructor(config: RemoteConfig) {
-    this.config = config;
-  }
+	constructor(config: RemoteConfig) {
+		this.config = config;
+	}
 
-  async load(): Promise<RemoteConfig> {
-    return this.config;
-  }
+	async load(): Promise<RemoteConfig> {
+		return this.config;
+	}
 
-  setConfig(config: RemoteConfig): void {
-    this.config = config;
-  }
+	setConfig(config: RemoteConfig): void {
+		this.config = config;
+	}
 }
