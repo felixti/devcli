@@ -8,6 +8,7 @@ import { nvmTool } from "@/modules/setup/tools/nvm/nvm";
 import { opencodeTool } from "@/modules/setup/tools/opencode/opencode";
 import type { ToolModule, ToolRegistry } from "@/modules/setup/tools/registry";
 import { ToolRegistry as ToolRegistryClass } from "@/modules/setup/tools/registry";
+import { VscodeExtensionsTool } from "@/modules/setup/tools/vscode-extensions/vscode-extensions";
 
 function createToolRegistry(): ToolRegistry {
 	const registry = new ToolRegistryClass();
@@ -15,6 +16,7 @@ function createToolRegistry(): ToolRegistry {
 	registry.register(AzureTool);
 	registry.register(new CopilotTool());
 	registry.register(opencodeTool);
+	registry.register(new VscodeExtensionsTool());
 	return registry;
 }
 
