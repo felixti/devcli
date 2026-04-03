@@ -1,3 +1,4 @@
+import type { WslConfigService } from "../wsl/wslconfig.types";
 import type {
 	ConfigLoader,
 	FileSystem,
@@ -15,6 +16,7 @@ type ServiceFactories = {
 	getFileSystem: () => FileSystem;
 	getPlatformDetector: () => PlatformDetector;
 	getFormatter: () => Formatter;
+	getWslConfigService: () => WslConfigService;
 };
 
 export class ServiceContainerImpl implements ServiceContainer {
@@ -26,6 +28,7 @@ export class ServiceContainerImpl implements ServiceContainer {
 		fileSystem: FileSystem;
 		platformDetector: PlatformDetector;
 		formatter: Formatter;
+		wslConfigService: WslConfigService;
 	}> = {};
 
 	constructor(factories: ServiceFactories) {
@@ -72,5 +75,12 @@ export class ServiceContainerImpl implements ServiceContainer {
 			this.instances.formatter = this.factories.getFormatter();
 		}
 		return this.instances.formatter;
+	}
+
+	getWslConfigService(): WslConfigService {
+		if (!this.instances.wslConfigService) {
+			this.instances.wslConfigService = this.factories.getWslConfigService();
+		}
+		return this.instances.wslConfigService;
 	}
 }
