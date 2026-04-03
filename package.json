@@ -16,8 +16,13 @@
   },
   "private": true,
   "devDependencies": {
+    "@biomejs/biome": "^2.4.10",
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
     "@types/bun": "latest",
     "@types/node": "^20",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "typescript": "^5"
   },
   "dependencies": {
