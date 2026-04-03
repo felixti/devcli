@@ -41,11 +41,7 @@ function createServiceContainer(): ServiceContainer {
 		getPlatformDetector: () => new RealPlatformDetector(),
 		getFormatter: () => new Formatter(),
 		getWslConfigService: () =>
-			new WslConfigServiceImpl(
-				new RealProcessRunner(),
-				new RealFileSystem(),
-				new RealPrompter(),
-			),
+			new WslConfigServiceImpl(new RealProcessRunner(), new RealFileSystem()),
 	});
 }
 

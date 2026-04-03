@@ -15,13 +15,21 @@ export interface WslConfig {
 }
 
 /**
+ * Partial WSL config from parsing existing file (fields may be undefined).
+ */
+export interface ParsedWslConfig {
+	processors?: number;
+	memoryGB?: number;
+}
+
+/**
  * Result of checking WSL configuration status.
  */
 export interface WslConfigRecommendation {
 	/** The suggested WSL configuration based on host resources */
 	suggested: WslConfig;
-	/** Current configuration if .wslconfig exists */
-	current?: WslConfig;
+	/** Current configuration if .wslconfig exists (fields may be undefined if not set) */
+	current?: ParsedWslConfig;
 	/** Detected host machine resources */
 	hostResources: HostResources;
 }

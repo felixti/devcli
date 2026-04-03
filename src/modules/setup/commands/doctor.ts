@@ -161,8 +161,10 @@ export class DoctorCommand {
 		);
 
 		if (current) {
+			const currentCpu = current.processors ?? "not set";
+			const currentMem = current.memoryGB ?? "not set";
 			formatter.warn(
-				`Current .wslconfig: ${current.processors} CPUs, ${current.memoryGB} GB RAM`,
+				`Current .wslconfig: ${currentCpu} CPUs, ${currentMem} GB RAM`,
 			);
 			formatter.warn(
 				`Suggested: ${suggested.processors} CPUs, ${suggested.memoryGB} GB RAM`,
@@ -204,7 +206,8 @@ export class DoctorCommand {
 				`.wslconfig created with ${suggested.processors} CPUs, ${suggested.memoryGB} GB RAM`,
 			);
 		} catch (error) {
-			formatter.error(`Failed to create .wslconfig: ${error}`);
+			const message = error instanceof Error ? error.message : String(error);
+			formatter.error(`Failed to create .wslconfig: ${message}`);
 		}
 	}
 }
