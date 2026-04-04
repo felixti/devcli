@@ -7,7 +7,7 @@ import type {
   Platform,
   ProcessRunner,
   Prompter,
-} from "../../../../kernel/types";
+} from "@/kernel/types";
 import type { ToolModule } from "../registry";
 
 export class OpencodeTool implements ToolModule {

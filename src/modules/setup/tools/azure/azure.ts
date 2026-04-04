@@ -5,7 +5,7 @@ import type {
   Platform,
   ProcessRunner,
   Prompter,
-} from "../../../../kernel/types";
+} from "@/kernel/types";
 import type { ToolModule } from "../registry";
 
 function isExpiredTokenError(stderr: string): boolean {

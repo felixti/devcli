@@ -5,7 +5,7 @@ import type {
   Platform,
   ProcessRunner,
   Prompter,
-} from "../../../kernel/types.ts";
+} from "@/kernel/types";
 
 /**
  * Interface for tool modules that can check installation status and install tools.
