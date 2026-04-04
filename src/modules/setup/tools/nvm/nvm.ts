@@ -103,22 +103,6 @@ export class NvmTool implements ToolModule {
     platform: Platform,
     yes?: boolean,
   ): Promise<InstallResult> {
-    const mockFs: FileSystem = {
-      exists: async () => false,
-      readFile: async () => "",
-      writeFile: async () => {},
-      mkdirp: async () => {},
-    };
-    const checkResult = await this.check(runner, platform, mockFs);
-
-    if (checkResult.installed) {
-      return {
-        toolName: this.name,
-        success: true,
-        message: `nvm is already installed (${checkResult.version})`,
-      };
-    }
-
     if (!yes) {
       const shouldInstall = await prompter.confirm(
         "nvm is not installed. Would you like to install it?",
@@ -171,19 +155,10 @@ export class NvmTool implements ToolModule {
       };
     }
 
-    const verifyResult = await this.check(runner, platform, mockFs);
-    if (!verifyResult.installed) {
-      return {
-        toolName: this.name,
-        success: false,
-        message: `${installMessage}, but verification failed. Please restart your shell or terminal.`,
-      };
-    }
-
     return {
       toolName: this.name,
       success: true,
-      message: `${installMessage} (v${verifyResult.version})`,
+      message: installMessage,
     };
   }
 
