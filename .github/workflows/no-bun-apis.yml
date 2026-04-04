@@ -1,0 +1,33 @@
+name: No Bun APIs in Production
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for Bun-specific APIs in production code
+        run: |
+          # Grep for Bun. API calls in src/ (excluding test files)
+          matches=$(grep -rn "Bun\." src/ \
+            --include="*.ts" \
+            --include="*.tsx" \
+            --exclude="*.test.ts" \
+            --exclude="*.spec.ts" \
+            --exclude="*.d.ts" || true)
+
+          if [ -n "$matches" ]; then
+            echo "❌ Found Bun-specific APIs in production code:"
+            echo "$matches"
+            echo ""
+            echo "Bun APIs (Bun.spawn, Bun.file, Bun.write, etc.) are not portable."
+            echo "Use Node.js APIs instead (child_process, node:fs/promises, etc.)"
+            exit 1
+          fi
+
+          echo "✅ No Bun-specific APIs found in production code"
