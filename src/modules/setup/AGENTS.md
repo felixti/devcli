@@ -85,6 +85,40 @@ registry.register(myTool);
 }
 ```
 
+## ERROR HANDLING CONVENTIONS
+
+### CheckResult Semantics
+- `installed: true` + `configured: true` → Tool is ready to use
+- `installed: true` + `configured: false` → Tool exists but needs setup
+- `installed: false` → Tool is not installed
+
+### InstallResult Semantics
+- `success: true` → Install completed (or was already present / user cancelled)
+- `success: false` → Install failed due to error
+
+### User Cancellations
+When user declines to install (prompt returns false), return:
+```typescript
+{ success: true, message: "Installation cancelled by user" }
+```
+This is NOT a failure — it's a successful skip.
+
+### Tool-Level Errors
+Catch all errors in tool methods and return them in the result:
+```typescript
+async install(runner, prompter, platform) {
+  try {
+    // install logic
+    return { success: true, message: "Installed" };
+  } catch (error) {
+    return {
+      success: false,
+      message: `Install failed: ${error instanceof Error ? error.message : String(error)}`
+    };
+  }
+}
+```
+
 ## ANTI-PATTERNS
 
 **DON'T:** Skip verification after install — always re-check  
