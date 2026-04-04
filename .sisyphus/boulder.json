@@ -1,72 +1,115 @@
 {
-  "active_plan": "/var/home/felix-powerhouse/Sources/github/jobdevcli/.sisyphus/plans/devcli.md",
-  "started_at": "2026-04-03T04:19:34.557Z",
+  "active_plan": "/var/home/felix-powerhouse/Sources/github/jobdevcli/.sisyphus/plans/architecture-fixes.md",
+  "started_at": "2026-04-03T23:25:28.597Z",
   "session_ids": [
-    "ses_2b081e76cffenDHNTswwrDK4a9",
-    "ses_2ae6b4b81ffekeZOdLcO9RVryj",
-    "ses_2ae68741fffeBhzjOjFPv8KGgf",
-    "ses_2ae68e2cdffeeNSoEF5xU3OMLQ",
-    "ses_2ae68974cffeu1sFjB0drazw6b",
-    "ses_2ae68b8f2ffeBsRwqemKA9E0c9",
-    "ses_2ae64ea0dffe0ScEUIh3wcYuSI",
-    "ses_2ae63c44fffeXxj9V9eqrtpQUE",
-    "ses_2ae6420b6ffeYZwB6uicjiioPU",
-    "ses_2ae636cf7ffe7L5OMCZ36rzohF",
-    "ses_2ae648310ffe8n8dJpdrVMl682",
-    "ses_2ae5d2a23ffeth2dY8CjSJdreH",
-    "ses_2ae5cca5affe66JIOug5ZjK5vE",
-    "ses_2ae5c1c18ffegIYH3LJH5nfSoc",
-    "ses_2ae5bd290ffekCIjOPGwbpD4tj",
-    "ses_2ae5c7154ffeqmvhKULijen5E8",
-    "ses_2ae512c1affevUOaljbO47EF0D",
-    "ses_2ae50c9eeffeyD1CmpLgBdXyE5",
-    "ses_2ae51986bffeh44N63ftinXY3l",
-    "ses_2ae4ade25ffeVy6rFPYIhGCbIe",
-    "ses_2ae40ca15ffeor7gTpcoBT1Wqm",
-    "ses_2ae387c5cffeQYJK6VhAZ1EFko",
-    "ses_2ae37f976ffeJNp0fRzcz5Soyh",
-    "ses_2ae384a60ffeEVxwlgblxzE7P2",
-    "ses_2ae38a408ffedWOnwreo4rLnYw",
-    "ses_2ae309bf6fferc4usfy2bPEwRI"
+    "ses_2ab9da66dffeieT029PyrOKyVW",
+    "ses_2aa48c63effe66qW04eIzqgrXV",
+    "ses_2aa47274affePAA1R3BNR1tkBF",
+    "ses_2aa452f2affe65eBZvfuM9VMAu",
+    "ses_2aa430c1cffefqIhFtpcG61Vuo",
+    "ses_2aa33cfccffexo9K7cE2WS2In9",
+    "ses_2aa2f8e00ffeQrOF26NNxsAfOE",
+    "ses_2aa2b0d30ffeEmbsN05Uqwn2ek",
+    "ses_2aa289044fferlwAq6qOTXnTCd",
+    "ses_2aa2432e5ffe41hOgwTPaJrAVx",
+    "ses_2aa21cacbffeXpoRL8mprjMSX5",
+    "ses_2aa1f1cb8ffegdHLhGfjd5IFST",
+    "ses_2aa1efb1dffegwggyA48EcDhiL",
+    "ses_2aa1f491affeUtQuCO2yA2eHaf",
+    "ses_2aa1f33b2ffeW2Bl7i0gHjIsce"
   ],
-  "plan_name": "devcli",
-  "agent": "atlas",
+  "plan_name": "architecture-fixes",
+  "worktree_path": null,
   "task_sessions": {
     "todo:1": {
       "task_key": "todo:1",
       "task_label": "1",
-      "task_title": "Project Scaffolding + Test Infrastructure",
-      "session_id": "ses_2ae6b4b81ffekeZOdLcO9RVryj",
+      "task_title": "**Commit uncommitted verification fixes**",
+      "session_id": "ses_2aa48c63effe66qW04eIzqgrXV",
       "agent": "Sisyphus-Junior",
       "category": "quick",
-      "updated_at": "2026-04-03T04:24:32.798Z"
+      "updated_at": "2026-04-03T23:40:05.786Z"
     },
-    "todo:18": {
-      "task_key": "todo:18",
-      "task_label": "18",
-      "task_title": "Setup Module Registration",
-      "session_id": "ses_2ae4ade25ffeVy6rFPYIhGCbIe",
+    "todo:2": {
+      "task_key": "todo:2",
+      "task_label": "2",
+      "task_title": "**Fix import paths — production files (9 files)**",
+      "session_id": "ses_2aa47274affePAA1R3BNR1tkBF",
       "agent": "Sisyphus-Junior",
       "category": "quick",
-      "updated_at": "2026-04-03T05:08:35.518Z"
+      "updated_at": "2026-04-03T23:42:26.095Z"
     },
-    "todo:20": {
-      "task_key": "todo:20",
-      "task_label": "20",
-      "task_title": "CLI Entry Point + Integration Tests",
-      "session_id": "ses_2ae40ca15ffeor7gTpcoBT1Wqm",
+    "todo:3": {
+      "task_key": "todo:3",
+      "task_label": "3",
+      "task_title": "**Fix import paths — test files (8 files)**",
+      "session_id": "ses_2aa452f2affe65eBZvfuM9VMAu",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-03T23:44:41.187Z"
+    },
+    "todo:4": {
+      "task_key": "todo:4",
+      "task_label": "4",
+      "task_title": "**Deduplicate Platform type**",
+      "session_id": "ses_2aa430c1cffefqIhFtpcG61Vuo",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-04T00:00:19.944Z"
+    },
+    "todo:5": {
+      "task_key": "todo:5",
+      "task_label": "5",
+      "task_title": "**Remove `_config` dead code from doctor.ts**",
+      "session_id": "ses_2aa33cfccffexo9K7cE2WS2In9",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-04T00:03:34.747Z"
+    },
+    "todo:6": {
+      "task_key": "todo:6",
+      "task_label": "6",
+      "task_title": "**Fix nvm.ts — remove redundant self-checks and dummy mockFs**",
+      "session_id": "ses_2aa2f8e00ffeQrOF26NNxsAfOE",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-04T00:07:56.686Z"
+    },
+    "todo:7": {
+      "task_key": "todo:7",
+      "task_label": "7",
+      "task_title": "**Create PlatformDetector mock service**",
+      "session_id": "ses_2aa2b0d30ffeEmbsN05Uqwn2ek",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-04-04T00:12:45.792Z"
+    },
+    "todo:9": {
+      "task_key": "todo:9",
+      "task_label": "9",
+      "task_title": "**Add CLI integration smoke test**",
+      "session_id": "ses_2aa289044fferlwAq6qOTXnTCd",
       "agent": "Sisyphus-Junior",
       "category": "unspecified-high",
-      "updated_at": "2026-04-03T05:17:45.919Z"
+      "updated_at": "2026-04-04T00:18:08.372Z"
     },
-    "final-wave:f1": {
-      "task_key": "final-wave:f1",
-      "task_label": "F1",
-      "task_title": "**Plan Compliance Audit** — `oracle`",
-      "session_id": "ses_2ae309bf6fferc4usfy2bPEwRI",
+    "todo:10": {
+      "task_key": "todo:10",
+      "task_label": "10",
+      "task_title": "**Add CI workflow for Bun API detection**",
+      "session_id": "ses_2aa2432e5ffe41hOgwTPaJrAVx",
       "agent": "Sisyphus-Junior",
       "category": "quick",
-      "updated_at": "2026-04-03T05:44:48.921Z"
+      "updated_at": "2026-04-04T00:20:47.984Z"
+    },
+    "todo:11": {
+      "task_key": "todo:11",
+      "task_label": "11",
+      "task_title": "**Review and document WSL module in ARCHITECTURE.md**",
+      "session_id": "ses_2aa21cacbffeXpoRL8mprjMSX5",
+      "agent": "Sisyphus-Junior",
+      "category": "writing",
+      "updated_at": "2026-04-04T00:23:43.810Z"
     }
   }
 }
