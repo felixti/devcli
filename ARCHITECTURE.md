@@ -448,6 +448,108 @@ switch (process.platform) {
 
 ---
 
+## WSL Configuration Service
+
+### Purpose
+
+Detect Windows host hardware resources (CPU cores, memory) and recommend optimal WSL2 configuration settings. The service bridges the WSL2 Linux environment with Windows host information via PowerShell and WMI queries.
+
+### Architecture
+
+The WSL module uses `powershell.exe` (available in WSL2) to query Windows host hardware via WMI:
+
+```
+WSL2 Linux Environment                    Windows Host
+┌─────────────────────┐                  ┌─────────────────┐
+│ WslConfigService    │──powershell.exe──→│ WMI Queries     │
+│                     │                  │ - Win32_Processor
+│                     │──cmd.exe─────────→│ - Win32_ComputerSystem
+│                     │   (USERPROFILE)  │                 │
+└─────────────────────┘                  └─────────────────┘
+```
+
+**Implementation**: `src/wsl/wslconfig.service.ts` (209 LOC)
+
+### Service Interface
+
+`WslConfigService` defined in `src/wsl/wslconfig.types.ts`:
+
+| Method | Purpose | Returns |
+|--------|---------|---------|
+| `getHostResources()` | Query Windows CPU/memory via PowerShell WMI | `HostResources \| null` |
+| `calculateRecommendation(resources)` | Compute recommended WSL config (CPU/2, RAM/4) | `WslConfig` |
+| `check()` | Compare current .wslconfig vs recommendation | `WslConfigRecommendation \| null` |
+| `getWindowsHomePath()` | Resolve Windows user home from WSL | `string` |
+| `createConfig(config)` | Write .wslconfig file to Windows home | `void` |
+
+**Calculation Formula**:
+- Processors: `floor(cpuCores / 2)`, rounded to nearest even number, minimum 2
+- Memory: `floor(memoryGB / 4)`, minimum 1 GB
+
+### Integration with Doctor Command
+
+The doctor command conditionally checks WSL configuration when running in WSL2:
+
+```typescript
+// src/modules/setup/commands/doctor.ts:35-43
+if (platformInfo.isWSL) {
+  const wslService = this.services.getWslConfigService();
+  const wslCheck = await wslService.check();
+
+  if (wslCheck) {
+    formatter.section("WSL Resource Configuration");
+    await this.displayWslConfigRecommendation(wslCheck, prompter, wslService, formatter);
+  }
+}
+```
+
+**User Flow**:
+1. Detect if running in WSL2 via `platformInfo.isWSL`
+2. Query Windows host resources via PowerShell
+3. Parse existing `.wslconfig` if present
+4. Display comparison: current vs recommended
+5. Prompt user to apply/create config
+6. Write `.wslconfig` to Windows user home directory
+
+### Known Limitations
+
+**1. Silent Error Swallowing in getHostResources**
+
+Location: `wslconfig.service.ts:57-59`
+
+```typescript
+try {
+  // ... PowerShell queries
+} catch {
+  return null;  // ← All errors silently swallowed
+}
+```
+
+**Issue**: Any error (PowerShell not found, WMI failure, parse errors) returns `null` without logging or distinction between failure types.
+
+**2. Non-Standard WSL_USER Environment Variable**
+
+Location: `wslconfig.service.ts:87`
+
+```typescript
+const username = process.env.WSL_USER || process.env.USER || "unknown";
+```
+
+**Issue**: `WSL_USER` is not a standard WSL environment variable. Standard WSL provides `USER` (Linux username) and `WSL_DISTRO_NAME`, but not `WSL_USER`. The fallback works but the variable name is misleading.
+
+**3. Whitespace-Sensitive Config Parsing**
+
+Location: `wslconfig.service.ts:131-133`
+
+```typescript
+const processorsMatch = content.match(/processors\s*=\s*(\d+)/i);
+const memoryMatch = content.match(/memory\s*=\s*(\d+)\s*(GB|MB)?/i);
+```
+
+**Issue**: The regex patterns assume standard `key=value` format. Configurations with extra whitespace, tabs, or different formatting may not parse correctly. No validation that the match is within a `[wsl2]` section.
+
+---
+
 ## Test Architecture
 
 ### Testing Patterns
@@ -636,9 +738,11 @@ const modules = [setupModule];
 ### Output (2 files, 239 LOC)
 - `src/output/formatter.ts` - TTY formatting (98 LOC)
 
-### WSL (3 files, 612 LOC)
-- `src/wsl/wslconfig.service.ts` - WSL config (209 LOC)
-- `src/wsl/wslconfig.types.ts` - Types (69 LOC)
+### WSL Configuration (4 files, 619 LOC)
+- `src/wsl/index.ts` - Public exports (8 LOC)
+- `src/wsl/wslconfig.types.ts` - Interface definitions (69 LOC)
+- `src/wsl/wslconfig.service.ts` - Service implementation (209 LOC)
+- `src/wsl/wslconfig.service.test.ts` - Unit tests (334 LOC)
 
 ---
 
